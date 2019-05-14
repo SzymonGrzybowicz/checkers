@@ -36,6 +36,11 @@ public class Piece extends StackPane {
         }
     }
 
+    public void mouseClickedOnPiece(){
+        System.out.println("x: " + GridPane.getColumnIndex(this.getParent()));
+        System.out.println("y: " + GridPane.getRowIndex(this.getParent()));
+    }
+
     public void setQueen(boolean queen) {
         isQueen = queen;
     }

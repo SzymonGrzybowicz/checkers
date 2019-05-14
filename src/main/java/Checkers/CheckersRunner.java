@@ -11,9 +11,7 @@ import javafx.stage.Stage;
 
 public class CheckersRunner extends Application {
 
-    private Image white = new Image("white_piece.png", 100, 100, true, true);
-    private Image black = new Image("black_piece.png");
-    private Pane pieces = new FlowPane(Orientation.HORIZONTAL);
+    Board board = new Board();
 
 
 
@@ -25,12 +23,14 @@ public class CheckersRunner extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
-        Board board = new Board();
         GridPane grid = board.createBoard();
 
 
         Scene scene = new Scene(grid, 850, 850, Color.BLACK);
+
+        grid.setOnMouseClicked(e -> board.readMouseEvent(e));
+
+
 
         primaryStage.setResizable(false);
 

@@ -1,5 +1,6 @@
 package Checkers;
 
+import javafx.event.Event;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -23,6 +24,7 @@ public class Board {
 
                 if ((row + column) % 2 == 0) {
                     colour = "white";
+
                 } else {
                     colour = "black";
                 }
@@ -33,11 +35,11 @@ public class Board {
                 //Dodawanie pionków na pola startowe
 
                 if (row < 3 && (row + column) % 2 == 0) {
-                    grid.add(new Piece(0, false), column, row);
+                    square.getChildren().add(new Piece(0, false));
                 }
 
                 if (row >= 5 && (row + column) % 2 != 0) {
-                    grid.add(new Piece(1, false), column, row);
+                    square.getChildren().add(new Piece(1, false));
                 }
 
 
@@ -49,9 +51,13 @@ public class Board {
             grid.getRowConstraints().add(new RowConstraints(5, Control.USE_COMPUTED_SIZE, Double.MAX_VALUE, Priority.ALWAYS, VPos.CENTER, true));
 
         }
-
-
         return grid;
+    }
+
+    public void readMouseEvent(Event event){
+        if(event.getTarget() instanceof Piece){
+            ((Piece) event.getTarget()).mouseClickedOnPiece();
+        }
     }
 
 }
