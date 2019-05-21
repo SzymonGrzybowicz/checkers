@@ -1,9 +1,7 @@
 package Checkers;
 
 import javafx.application.Application;
-import javafx.geometry.*;
 import javafx.scene.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -12,7 +10,6 @@ import javafx.stage.Stage;
 public class CheckersRunner extends Application {
 
     Board board = new Board();
-
 
 
     public static void main(String[] args) {
@@ -26,10 +23,9 @@ public class CheckersRunner extends Application {
         GridPane grid = board.createBoard();
 
 
-        Scene scene = new Scene(grid, 850, 850, Color.BLACK);
+        Scene scene = new Scene(grid, 800, 800, Color.BLACK);
 
         grid.setOnMouseClicked(e -> board.readMouseEvent(e));
-
 
 
         primaryStage.setResizable(false);
@@ -39,7 +35,6 @@ public class CheckersRunner extends Application {
         primaryStage.show();
 
     }
-
 
 
 }

@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Control;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class Board {
 
@@ -18,28 +19,25 @@ public class Board {
 
         for (int row = 0; row < 8; row++) {
             for (int column = 0; column < 8; column++) {
-                StackPane square = new StackPane();
-                String colour;
 
+                Field field = new Field();
 
                 if ((row + column) % 2 == 0) {
-                    colour = "white";
+                    field.setColour("white");
 
                 } else {
-                    colour = "black";
+                    field.setColour("black");
                 }
-                square.setStyle("-fx-background-color: " + colour + ";");
-                grid.add(square, column, row);
 
+                grid.add(field, column, row);
 
-                //Dodawanie pionków na pola startowe
 
                 if (row < 3 && (row + column) % 2 == 0) {
-                    square.getChildren().add(new Piece(0, false));
+                    field.addPiece(Color.BLACK);
                 }
 
                 if (row >= 5 && (row + column) % 2 != 0) {
-                    square.getChildren().add(new Piece(1, false));
+                    field.addPiece(Color.WHITE);
                 }
 
 
@@ -54,10 +52,10 @@ public class Board {
         return grid;
     }
 
-    public void readMouseEvent(Event event){
-        if(event.getTarget() instanceof Piece){
-            ((Piece) event.getTarget()).mouseClickedOnPiece();
+    public void readMouseEvent(Event event) {
+        if (event.getTarget() instanceof Piece) {
+            ((Piece) event.getTarget()).mouseClicked();
         }
-    }
 
+    }
 }
