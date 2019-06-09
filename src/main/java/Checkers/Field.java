@@ -9,6 +9,7 @@ public class Field extends StackPane {
     private Piece piece;
     String defaultColour;
     private boolean nextKickPossible;
+    Computer computer = new Computer();
 
     public Field(String defaultColour) {
         this.setMaxSize(100, 100);
@@ -31,10 +32,10 @@ public class Field extends StackPane {
         Board.whitePieces.add(piece);
     }
 
-    public void addBlackPiece() {
-        piece = new BlackPiece();
+    public void addRedPiece() {
+        piece = new RedPiece();
         this.getChildren().addAll(piece);
-        Board.blackPieces.add(piece);
+        Board.redPieces.add(piece);
     }
 
     public void removePiece() {
@@ -48,26 +49,52 @@ public class Field extends StackPane {
 
     public void mouseClicked() {
 
-
         if (Board.possibleKickMoves.contains(this)) {
 
+            nextKickPossible = false;
             kickPiece();
+            System.out.println("zbito");
+            System.out.println(nextKickPossible);
 
             if (!(nextKickPossible)) {
-                Board.whiteTurn = !(Board.whiteTurn);
+                blockedMoveLogic();
             }
 
         } else if (Board.possibleMoves.contains(this)) {
 
             movePiece();
 
-            Board.whiteTurn = !(Board.whiteTurn);
+            blockedMoveLogic();
+
         }
 
         Utils.setBoardDefaultColours((GridPane) this.getParent());
 
 
+        if (!(Board.whiteTurn)) {
+            computer.computerLogic((GridPane) this.getParent());
+        }
+
     }
+
+
+    private void blockedMoveLogic() {
+
+        Board.whiteTurn = !(Board.whiteTurn);
+        Utils.checkCanMove((GridPane) this.getParent());
+        Utils.writeScoreAndTurn();
+        if (!(Board.whitePieces.isEmpty()) && !(Board.redPieces.isEmpty())) {
+            if (Board.whiteTurn && Board.whiteCantMove) {
+                CheckersRunner.wynik.setText("White player Blocked! \nWinner is Red!");
+            } else if (!(Board.whiteTurn) && Board.redCantMove) {
+                CheckersRunner.wynik.setText("Red player Blocked! \nWinner is White!");
+            }
+        }
+
+        Board.alreadyClickedPiece = null;
+
+    }
+
 
     private void movePiece() {
         ((Field) Board.alreadyClickedPiece.getParent()).removePiece();
@@ -75,7 +102,6 @@ public class Field extends StackPane {
 
         checkAndSetQueenLogic();
 
-        Board.alreadyClickedPiece = null;
         Board.possibleMoves.clear();
     }
 
@@ -96,19 +122,18 @@ public class Field extends StackPane {
         ((Field) Utils.getNode(((GridPane) this.getParent()), rowOfKickedPiece, columnOfKickedPiece)).removePiece();
 
         Board.whitePieces.remove(kickedPiece);
-        Board.blackPieces.remove(kickedPiece);
+        Board.redPieces.remove(kickedPiece);
 
         checkAndSetQueenLogic();
-
-        if (Utils.checkWhichPieceCanKick((GridPane) this.getParent()).contains(Board.alreadyClickedPiece)) {
-            Board.alreadyClickedPiece.paintKickPossible();
+        System.out.println("zaczynamy sprawdzac");
+        if (Utils.canKick(Board.alreadyClickedPiece)) {
             nextKickPossible = true;
-
         }
 
-        Board.alreadyClickedPiece = null;
         Board.possibleMoves.clear();
         Board.possibleKickMoves.clear();
+
+
     }
 
     private void checkAndSetQueenLogic() {
@@ -116,7 +141,7 @@ public class Field extends StackPane {
             Board.alreadyClickedPiece.setQueen();
         }
 
-        if (Board.alreadyClickedPiece instanceof BlackPiece && GridPane.getRowIndex(this) == 7) {
+        if (Board.alreadyClickedPiece instanceof RedPiece && GridPane.getRowIndex(this) == 7) {
             Board.alreadyClickedPiece.setQueen();
         }
     }

@@ -3,6 +3,8 @@ package Checkers;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
+import static Checkers.Utils.getNode;
+
 public class WhitePiece extends Piece {
 
 
@@ -20,20 +22,20 @@ public class WhitePiece extends Piece {
             Board.alreadyClickedPiece = null;
         }
         if (Board.whiteTurn) {
+            Board.alreadyClickedPiece = this;
             if (Utils.canKick(this)) {
                 paintKickPossible();
-            } else if(Utils.checkWhichPieceCanKick((GridPane)this.getParent().getParent()).size() == 0) {
+            } else if (Utils.checkWhichPieceCanKick((GridPane) this.getParent().getParent()).size() == 0) {
                 paintMovePossible();
             }
         }
+
     }
 
 
-
-    private void paintMovePossible() {
+    public void paintMovePossible() {
         {
 
-            Board.alreadyClickedPiece = this;
 
             int row = GridPane.getRowIndex(this.getParent());
             int column = GridPane.getColumnIndex(this.getParent());
@@ -49,7 +51,7 @@ public class WhitePiece extends Piece {
             }
 
 
-            if (isQueen()){
+            if (isQueen()) {
                 Field leftDown = (Field) Utils.getNode((GridPane) this.getParent().getParent(), (row + 1), (column + 1));
                 Field rightDown = (Field) Utils.getNode((GridPane) this.getParent().getParent(), (row + 1), (column - 1));
 
@@ -68,6 +70,37 @@ public class WhitePiece extends Piece {
         }
 
 
+    }
+
+    public boolean canMoveOrKick() {
+        if (Utils.canKick(this)) {
+            return true;
+        }
+        int row = GridPane.getRowIndex(this.getParent());
+        int column = GridPane.getColumnIndex(this.getParent());
+
+        Field leftUp = (Field) getNode((GridPane) this.getParent().getParent(), (row - 1), (column + 1));
+        Field rightUp = (Field) getNode((GridPane) this.getParent().getParent(), (row - 1), (column - 1));
+
+        if (leftUp != null && leftUp.getChildren().size() == 0) {
+            return true;
+        }
+        if (rightUp != null && rightUp.getChildren().size() == 0) {
+            return true;
+        }
+
+        if (isQueen()) {
+            Field leftDown = (Field) Utils.getNode((GridPane) this.getParent().getParent(), (row + 1), (column + 1));
+            Field rightDown = (Field) Utils.getNode((GridPane) this.getParent().getParent(), (row + 1), (column - 1));
+
+            if (leftDown != null && leftDown.getChildren().size() == 0) {
+                return true;
+            }
+            if (rightDown != null && rightDown.getChildren().size() == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

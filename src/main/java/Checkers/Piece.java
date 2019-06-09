@@ -18,6 +18,10 @@ abstract class Piece extends Circle {
 
     abstract void mouseClicked();
 
+    abstract void paintMovePossible();
+
+    abstract boolean canMoveOrKick();
+
 
     public void setQueen() {
 
@@ -32,58 +36,56 @@ abstract class Piece extends Circle {
     }
 
 
-    public void paintKickPossible(){
+    public void paintKickPossible() {
         Board.alreadyClickedPiece = this;
 
         GridPane grid = (GridPane) this.getParent().getParent();
         int pieceRow = GridPane.getRowIndex(this.getParent());
         int piececolumn = GridPane.getColumnIndex(this.getParent());
 
-        Field up = (Field) getNode(grid, pieceRow + 1, piececolumn);
-        Field down = (Field) getNode(grid, pieceRow - 1, piececolumn);
-        Field left = (Field) getNode(grid, pieceRow, piececolumn - 1);
-        Field right = (Field) getNode(grid, pieceRow, piececolumn + 1);
+        Field leftup = (Field) getNode(grid, pieceRow + 1, piececolumn - 1);
+        Field leftdown = (Field) getNode(grid, pieceRow - 1, piececolumn - 1);
+        Field rightup = (Field) getNode(grid, pieceRow + 1, piececolumn + 1);
+        Field rightdown = (Field) getNode(grid, pieceRow - 1, piececolumn + 1);
 
-        if (up != null && up.getChildren().size() > 0) {
-            if (((Field) getNode(grid, pieceRow + 2, piececolumn)).getChildren().size() == 0) {
+        if (leftup != null && leftup.getChildren().size() > 0 && Board.alreadyClickedPiece.getClass() != leftup.getChildren().get(0).getClass()) {
+            if (getNode(grid, pieceRow + 2, piececolumn - 2) != null && ((Field) getNode(grid, pieceRow + 2, piececolumn - 2)).getChildren().size() == 0) {
 
-                up.setColour("red");
-                ((Field) getNode(grid, pieceRow + 2, piececolumn)).setColour("green");
-                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow + 2, piececolumn)));
+                leftup.setColour("purple");
+                ((Field) getNode(grid, pieceRow + 2, piececolumn - 2)).setColour("green");
+                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow + 2, piececolumn - 2)));
 
             }
         }
-        if (down != null && down.getChildren().size() > 0) {
-            if (((Field) getNode(grid, pieceRow - 2, piececolumn)).getChildren().size() == 0) {
+        if (leftdown != null && leftdown.getChildren().size() > 0 && Board.alreadyClickedPiece.getClass() != leftdown.getChildren().get(0).getClass()) {
+            if (getNode(grid, pieceRow - 2, piececolumn - 2) != null && ((Field) getNode(grid, pieceRow - 2, piececolumn - 2)).getChildren().size() == 0) {
 
-                down.setColour("red");
-                ((Field) getNode(grid, pieceRow - 2, piececolumn)).setColour("green");
-                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow - 2, piececolumn)));
+                leftdown.setColour("purple");
+                ((Field) getNode(grid, pieceRow - 2, piececolumn - 2)).setColour("green");
+                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow - 2, piececolumn - 2)));
             }
 
         }
-        if (left != null && left.getChildren().size() > 0) {
-            if (((Field) getNode(grid, pieceRow, piececolumn - 2)).getChildren().size() == 0) {
+        if (rightup != null && rightup.getChildren().size() > 0 && Board.alreadyClickedPiece.getClass() != rightup.getChildren().get(0).getClass()) {
+            if (getNode(grid, pieceRow + 2, piececolumn + 2) != null && ((Field) getNode(grid, pieceRow + 2, piececolumn + 2)).getChildren().size() == 0) {
 
-                left.setColour("red");
-                ((Field) getNode(grid, pieceRow, piececolumn - 2)).setColour("green");
-                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow, piececolumn - 2)));
+                rightup.setColour("purple");
+                ((Field) getNode(grid, pieceRow + 2, piececolumn + 2)).setColour("green");
+                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow + 2, piececolumn + 2)));
 
             }
 
         }
-        if (right != null && right.getChildren().size() > 0) {
-            if (((Field) getNode(grid, pieceRow, piececolumn + 2)).getChildren().size() == 0) {
+        if (rightdown != null && rightdown.getChildren().size() > 0 && Board.alreadyClickedPiece.getClass() != rightdown.getChildren().get(0).getClass()) {
+            if (getNode(grid, pieceRow - 2, piececolumn + 2) != null && ((Field) getNode(grid, pieceRow - 2, piececolumn + 2)).getChildren().size() == 0) {
 
-                right.setColour("red");
-                ((Field) getNode(grid, pieceRow, piececolumn + 2)).setColour("green");
-                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow, piececolumn + 2)));
+                rightdown.setColour("purple");
+                ((Field) getNode(grid, pieceRow - 2, piececolumn + 2)).setColour("green");
+                Board.possibleKickMoves.add(((Field) getNode(grid, pieceRow - 2, piececolumn + 2)));
 
             }
         }
     }
-
-
 
 
 }
